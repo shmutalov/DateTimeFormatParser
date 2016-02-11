@@ -20,5 +20,10 @@ namespace DateTimeFormatParser.Models
         /// Format token list
         /// </summary>
         public List<DateTimeFormatToken> Tokens { get; } = new List<DateTimeFormatToken>();
+
+        public override string ToString()
+        {
+            return string.Format("24H: {0}, Tokens: {1}", Is24HoursInTime, Tokens.Count);
+        }
     }
 }

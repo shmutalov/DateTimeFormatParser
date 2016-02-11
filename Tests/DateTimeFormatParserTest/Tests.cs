@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using DateTimeFormatParser;
 using DateTimeFormatParser.Enums;
@@ -11,7 +12,10 @@ namespace DateTimeFormatParserTest
         [Test]
         public void TestParsing()
         {
-            var format = FormatParser.Parse("yyyy-MM Mon, Month, dd hh:mm:ss.xxxxxx");
+            var sourceFormat = "yyyy-MM Mon, Month, dd hh:mm:ss.xxxxxx";
+            Console.WriteLine("Parsing format: {0}", sourceFormat);
+
+            var format = FormatParser.Parse(sourceFormat);
 
             Assert.IsNotNull(format);
 
@@ -161,7 +165,91 @@ namespace DateTimeFormatParserTest
         [Test]
         public void TestMapping()
         {
-            Assert.Fail();
+            // init mapper
+            var map = new Dictionary<DateTimeFormatType, Dictionary<int, string>>
+            {
+                // year
+                [DateTimeFormatType.Year] = new Dictionary<int, string>
+                {
+                    {4, "%Y"}
+                },
+
+                // month
+                [DateTimeFormatType.Month] = new Dictionary<int, string>
+                {
+                    {2, "%m"}
+                },
+
+                // short month
+                [DateTimeFormatType.ShortMonthName] = new Dictionary<int, string>
+                {
+                    {3, "%b"}
+                },
+
+                // long month
+                [DateTimeFormatType.LongMonthName] = new Dictionary<int, string>
+                {
+                    {5, "%B"}
+                },
+
+                // day
+                [DateTimeFormatType.Day] = new Dictionary<int, string>
+                {
+                    {1, "%e"},
+                    {2, "%d"}
+                },
+
+                // hour
+                [DateTimeFormatType.Hour] = new Dictionary<int, string>
+                {
+                    {1, "%k"},
+                    {2, "%H"}
+                },
+
+                // am/pm hour
+                [DateTimeFormatType.AmPmHour] = new Dictionary<int, string>
+                {
+                    {1, "%l"},
+                    {2, "%I"}
+                },
+
+                // minute
+                [DateTimeFormatType.Minute] = new Dictionary<int, string>
+                {
+                    {2, "%M"},
+                },
+
+                // second
+                [DateTimeFormatType.Second] = new Dictionary<int, string>
+                {
+                    {2, "%S"},
+                },
+
+                // millisecond
+                [DateTimeFormatType.Millisecond] = new Dictionary<int, string>
+                {
+                    {3, "%f"},
+                },
+
+                // am/pm
+                [DateTimeFormatType.AmPm] = new Dictionary<int, string>
+                {
+                    {2, "%p"},
+                },
+            };
+
+            var sourceFormat = "yyyy-MM Mon, Month, dd hh:mm:ss.xxxxxx";
+            Console.WriteLine("Parsing format: {0}", sourceFormat);
+
+            var format = FormatParser.Parse(sourceFormat);
+
+            Console.WriteLine("Mapping...");
+            var mappedString = FormatParser.MapToFormat(format, map);
+
+            Assert.AreNotEqual(string.Empty, mappedString);
+
+            Console.WriteLine("Mapped string: {0}", mappedString);
+            Assert.AreEqual("%Y-%m %b, %B, %d %I:%M:%S.%f", mappedString);
         }
     }
 }

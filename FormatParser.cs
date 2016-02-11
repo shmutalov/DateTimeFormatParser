@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using DateTimeFormatParser.Constants;
 using DateTimeFormatParser.Enums;
 using DateTimeFormatParser.Models;
@@ -53,7 +55,7 @@ namespace DateTimeFormatParser
         /// <param name="format">Datetime format string</param>
         /// <param name="startPosition">Initial position</param>
         /// <returns></returns>
-        private static DateTimeFormatToken NextToken([NotNull] string format, int startPosition)
+        private static DateTimeFormatToken GetToken([NotNull] string format, int startPosition)
         {
             if (startPosition == format.Length)
                 return null;
@@ -91,7 +93,7 @@ namespace DateTimeFormatParser
                             {
                                 DateTimeFormatToken token;
 
-                                while ((token = NextToken(format, ++startPosition)) != null)
+                                while ((token = GetToken(format, ++startPosition)) != null)
                                 {
                                     if (token.FormatType != type)
                                         break;
@@ -105,7 +107,7 @@ namespace DateTimeFormatParser
                         {
                             DateTimeFormatToken token;
 
-                            while ((token = NextToken(format, ++startPosition)) != null)
+                            while ((token = GetToken(format, ++startPosition)) != null)
                             {
                                 if (token.FormatType != type)
                                     break;
@@ -125,7 +127,7 @@ namespace DateTimeFormatParser
                 result.Length = 1;
                 result.Text = ch;
             }
-            
+
             return result;
         }
 
@@ -144,7 +146,7 @@ namespace DateTimeFormatParser
             var startIndex = 0;
             DateTimeFormatToken token;
 
-            while ((token = NextToken(format, startIndex)) != null)
+            while ((token = GetToken(format, startIndex)) != null)
             {
                 if (token.FormatType == DateTimeFormatType.Hour)
                     result.Is24HoursInTime = true;
@@ -161,11 +163,42 @@ namespace DateTimeFormatParser
         /// Maps format to new datetime format from map dictionary
         /// </summary>
         /// <param name="format">Source format</param>
-        /// <param name="map">Format dictionary to map</param>
+        /// <param name="map">Format dictionary to map: PartType -> Length -> Format</param>
         /// <returns>On successful map returns rebuilded string, otherwise empty string will be returned</returns>
-        public static string MapToFormat(DateTimeFormat format, Dictionary<DateTimeFormatType, Dictionary<int, string>> map)
+        public static string MapToFormat([NotNull] DateTimeFormat format, [NotNull] Dictionary<DateTimeFormatType, Dictionary<int, string>> map)
         {
-            return string.Empty;
+            if (format.Tokens.Count == 0)
+                return string.Empty;
+
+            var sb = new StringBuilder();
+
+            foreach (var token in format.Tokens)
+            {
+                if (token.FormatType == DateTimeFormatType.Delimiter)
+                {
+                    sb.Append(token.Text);
+                    continue;
+                }
+
+                if (!map.ContainsKey(token.FormatType))
+                    return string.Empty;
+
+                var tokenMapper = map[token.FormatType];
+
+                if (tokenMapper == null || tokenMapper.Count == 0)
+                    return string.Empty;
+
+                if (tokenMapper.Count == 1)
+                    sb.Append(tokenMapper[tokenMapper.Keys.First()]);
+                else
+                {
+                    sb.Append(tokenMapper.ContainsKey(token.Length)
+                        ? tokenMapper[token.Length]
+                        : tokenMapper[tokenMapper.Keys.First()]);
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }

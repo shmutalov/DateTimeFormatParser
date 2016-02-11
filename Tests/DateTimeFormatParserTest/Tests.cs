@@ -163,7 +163,7 @@ namespace DateTimeFormatParserTest
         }
 
         [Test]
-        public void TestMapping()
+        public void TestMySqlMapping()
         {
             // init mapper
             var map = new Dictionary<DateTimeFormatType, Dictionary<int, string>>
@@ -251,5 +251,254 @@ namespace DateTimeFormatParserTest
             Console.WriteLine("Mapped string: {0}", mappedString);
             Assert.AreEqual("%Y-%m %b, %B, %d %I:%M:%S.%f", mappedString);
         }
+
+        [Test]
+        public void TestOracleMapping()
+        {
+            var map = new Dictionary<DateTimeFormatType, Dictionary<int, string>>
+            {
+                // year
+                [DateTimeFormatType.Year] = new Dictionary<int, string>
+                {
+                    {1, "Y"},
+                    {2, "YY"},
+                    {3, "YYY"},
+                    {4, "YYYY"}
+                },
+
+                // month
+                [DateTimeFormatType.Month] = new Dictionary<int, string>
+                {
+                    {2, "MM"}
+                },
+
+                // short month
+                [DateTimeFormatType.ShortMonthName] = new Dictionary<int, string>
+                {
+                    {3, "MON"}
+                },
+
+                // long month
+                [DateTimeFormatType.LongMonthName] = new Dictionary<int, string>
+                {
+                    {5, "MONTH"}
+                },
+
+                // day
+                [DateTimeFormatType.Day] = new Dictionary<int, string>
+                {
+                    {2, "DD"}
+                },
+
+                // hour
+                [DateTimeFormatType.Hour] = new Dictionary<int, string>
+                {
+                    {2, "HH24"}
+                },
+
+                // am/pm hour
+                [DateTimeFormatType.AmPmHour] = new Dictionary<int, string>
+                {
+                    {2, "HH"}
+                },
+
+                // minute
+                [DateTimeFormatType.Minute] = new Dictionary<int, string>
+                {
+                    {2, "MI"},
+                },
+
+                // second
+                [DateTimeFormatType.Second] = new Dictionary<int, string>
+                {
+                    {2, "SS"},
+                },
+
+                // millisecond
+                [DateTimeFormatType.Millisecond] = new Dictionary<int, string>
+                {
+                    {1, "FF1"},
+                    {2, "FF2"},
+                    {3, "FF3"},
+                    {4, "FF4"},
+                    {5, "FF5"},
+                    {6, "FF6"},
+                },
+
+                // am/pm
+                [DateTimeFormatType.AmPm] = new Dictionary<int, string>
+                {
+                    {2, "AM"},
+                    {4, "A.M."},
+                },
+            };
+
+            var sourceFormat = "yyyy-MM Mon, Month, dd hh:mm:ss.xxxxxx";
+            Console.WriteLine("Parsing format: {0}", sourceFormat);
+
+            var format = FormatParser.Parse(sourceFormat);
+
+            Console.WriteLine("Mapping...");
+            var mappedString = FormatParser.MapToFormat(format, map);
+
+            Assert.AreNotEqual(string.Empty, mappedString);
+
+            Console.WriteLine("Mapped string: {0}", mappedString);
+            Assert.AreEqual("YYYY-MM MON, MONTH, DD HH:MI:SS.FF6", mappedString);
+        }
+
+        [Test]
+        public void TestPostgresMapping()
+        {
+            var map = new Dictionary<DateTimeFormatType, Dictionary<int, string>>
+            {
+                // year
+                [DateTimeFormatType.Year] = new Dictionary<int, string>
+                {
+                    {1, "Y"},
+                    {2, "YY"},
+                    {3, "YYY"},
+                    {4, "YYYY"}
+                },
+
+                // month
+                [DateTimeFormatType.Month] = new Dictionary<int, string>
+                {
+                    {2, "MM"}
+                },
+
+                // short month
+                [DateTimeFormatType.ShortMonthName] = new Dictionary<int, string>
+                {
+                    {3, "Mon"}
+                },
+
+                // long month
+                [DateTimeFormatType.LongMonthName] = new Dictionary<int, string>
+                {
+                    {5, "Month"}
+                },
+
+                // day
+                [DateTimeFormatType.Day] = new Dictionary<int, string>
+                {
+                    {2, "DD"}
+                },
+
+                // hour
+                [DateTimeFormatType.Hour] = new Dictionary<int, string>
+                {
+                    {2, "HH24"}
+                },
+
+                // am/pm hour
+                [DateTimeFormatType.AmPmHour] = new Dictionary<int, string>
+                {
+                    {2, "HH12"}
+                },
+
+                // minute
+                [DateTimeFormatType.Minute] = new Dictionary<int, string>
+                {
+                    {2, "MI"},
+                },
+
+                // second
+                [DateTimeFormatType.Second] = new Dictionary<int, string>
+                {
+                    {2, "SS"},
+                },
+
+                // millisecond
+                [DateTimeFormatType.Millisecond] = new Dictionary<int, string>
+                {
+                    {3, "MS"},
+                },
+
+                // am/pm
+                [DateTimeFormatType.AmPm] = new Dictionary<int, string>
+                {
+                    {2, "AM"},
+                    {4, "A.M."},
+                },
+            };
+
+            var sourceFormat = "yyyy-MM Mon, Month, dd hh:mm:ss.xxxxxx";
+            Console.WriteLine("Parsing format: {0}", sourceFormat);
+
+            var format = FormatParser.Parse(sourceFormat);
+
+            Console.WriteLine("Mapping...");
+            var mappedString = FormatParser.MapToFormat(format, map);
+
+            Assert.AreNotEqual(string.Empty, mappedString);
+
+            Console.WriteLine("Mapped string: {0}", mappedString);
+            Assert.AreEqual("YYYY-MM Mon, Month, DD HH12:MI:SS.MS", mappedString);
+        }
+
+        [Test]
+        public void TestSqliteMapping()
+        {
+            var map = new Dictionary<DateTimeFormatType, Dictionary<int, string>>
+            {
+                // year
+                [DateTimeFormatType.Year] = new Dictionary<int, string>
+                {
+                    {4, "%Y"}
+                },
+
+                // month
+                [DateTimeFormatType.Month] = new Dictionary<int, string>
+                {
+                    {2, "%m"}
+                },
+
+                // day
+                [DateTimeFormatType.Day] = new Dictionary<int, string>
+                {
+                    {2, "%d"}
+                },
+
+                // hour
+                [DateTimeFormatType.Hour] = new Dictionary<int, string>
+                {
+                    {2, "%H"}
+                },
+
+                // minute
+                [DateTimeFormatType.Minute] = new Dictionary<int, string>
+                {
+                    {2, "%M"},
+                },
+
+                // second
+                [DateTimeFormatType.Second] = new Dictionary<int, string>
+                {
+                    {2, "%S"},
+                },
+
+                // millisecond
+                [DateTimeFormatType.Millisecond] = new Dictionary<int, string>
+                {
+                    {3, "%f"},
+                },
+            };
+
+            var sourceFormat = "yyyy-MM dd HH:mm:ss.xxxxxx";
+            Console.WriteLine("Parsing format: {0}", sourceFormat);
+
+            var format = FormatParser.Parse(sourceFormat);
+
+            Console.WriteLine("Mapping...");
+            var mappedString = FormatParser.MapToFormat(format, map);
+
+            Assert.AreNotEqual(string.Empty, mappedString);
+
+            Console.WriteLine("Mapped string: {0}", mappedString);
+            Assert.AreEqual("%Y-%m %d %H:%M:%S.%f", mappedString);
+        }
+
+
     }
 }

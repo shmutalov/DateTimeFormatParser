@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DateTimeFormatParser", "DateTimeFormatParser.csproj", "{65AF66EC-1762-463F-8D44-CC7C8AF395A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DateTimeFormatParserTest", "Tests\DateTimeFormatParserTest\DateTimeFormatParserTest.csproj", "{0E8EC45E-F79D-4A73-B150-A0696406F732}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65AF66EC-1762-463F-8D44-CC7C8AF395A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65AF66EC-1762-463F-8D44-CC7C8AF395A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65AF66EC-1762-463F-8D44-CC7C8AF395A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65AF66EC-1762-463F-8D44-CC7C8AF395A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8EC45E-F79D-4A73-B150-A0696406F732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8EC45E-F79D-4A73-B150-A0696406F732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8EC45E-F79D-4A73-B150-A0696406F732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8EC45E-F79D-4A73-B150-A0696406F732}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

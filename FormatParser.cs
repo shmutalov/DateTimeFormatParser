@@ -18,11 +18,11 @@ namespace DateTimeFormatParser
 
         static FormatParser()
         {
-            TokenToFormatMap = new ConcurrentDictionary<DateTimeFormatType, string>();
-            FormatToTokenMap = new ConcurrentDictionary<string, DateTimeFormatType>();
-
             lock (SyncRoot)
             {
+                TokenToFormatMap = new ConcurrentDictionary<DateTimeFormatType, string>();
+                FormatToTokenMap = new ConcurrentDictionary<string, DateTimeFormatType>();
+
                 TokenToFormatMap[DateTimeFormatType.Year] = FormatParts.Year;
                 TokenToFormatMap[DateTimeFormatType.Month] = FormatParts.Month;
                 TokenToFormatMap[DateTimeFormatType.ShortMonthName] = FormatParts.ShortMonthName;
